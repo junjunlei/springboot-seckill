@@ -27,4 +27,12 @@ public class LoginDTO {
     public void setPassword(String password) {
         this.password = password;
     }
+
+    public LoginDTO() {
+    }
+
+    public LoginDTO(String mobile, String password) {
+        this.mobile = mobile;
+        this.password = password;
+    }
 }
