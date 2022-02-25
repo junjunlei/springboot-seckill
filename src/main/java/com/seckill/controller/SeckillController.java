@@ -1,13 +1,17 @@
 package com.seckill.controller;
 
+import com.seckill.entity.OrderInfo;
 import com.seckill.entity.User;
 import com.seckill.service.GoodsService;
+import com.seckill.service.SeckillService;
 import com.seckill.vo.GoodsVo;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.GetMapping;
+import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestMapping;
+import org.springframework.web.bind.annotation.RequestParam;
 
 /**
  * @Author zhanbo
@@ -21,22 +25,24 @@ public class SeckillController {
 
     @Autowired
     private GoodsService goodsService;
+    @Autowired
+    private SeckillService seckillService;
 
-    @GetMapping
-    public String seckill(Model model, User user, Long goodsId) {
+    @PostMapping
+    public String seckill(Model model, User user,@RequestParam("goodsId") Long goodsId) {
         model.addAttribute("user", user);
         if(user==null){
             return "login";
         }
         GoodsVo goodsVo = goodsService.getGoodsDetailById(goodsId);
         Integer stockCount = goodsVo.getStockCount();
-        if(stockCount<0){
+        if(stockCount<=0){
             model.addAttribute("errmsg","商品已秒杀完");
             return "seckill_fail";
         }
         //进项秒杀 下订单 减库存
-        //OrderInfo orderInfo = miaoshaService.seckill(user, goods);
-        //model.addAttribute("orderInfo", orderInfo);
+        OrderInfo orderInfo = seckillService.seckill(user, goodsVo);
+        model.addAttribute("orderInfo", orderInfo);
         model.addAttribute("goods", goodsVo);
         return "order_detail";
     }

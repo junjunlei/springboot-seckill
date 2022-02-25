@@ -12,9 +12,11 @@ import javax.servlet.http.HttpServletResponse;
  * @Version 1.0
  **/
 public interface UserService {
-    void login(HttpServletResponse response, LoginDTO loginDTO);
+    String login(HttpServletResponse response, LoginDTO loginDTO);
 
     void register(LoginDTO loginDTO);
 
     User getUserInfoByCookie(HttpServletResponse response,String cookie);
+
+    void insert(User user);
 }

@@ -5,6 +5,8 @@ import com.seckill.service.GoodsService;
 import com.seckill.vo.GoodsVo;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
+import org.springframework.transaction.annotation.Propagation;
+import org.springframework.transaction.annotation.Transactional;
 
 import java.util.List;
 
@@ -28,5 +30,11 @@ public class GoodsServiceImpl implements GoodsService {
     @Override
     public GoodsVo getGoodsDetailById(Long id) {
         return goodsMapper.getGoodsDetailById(id);
+    }
+
+    @Transactional(rollbackFor = Exception.class,propagation = Propagation.REQUIRED)
+    @Override
+    public int reduceStock(GoodsVo goodsVo) {
+        return goodsMapper.reduceStock(goodsVo.getId());
     }
 }

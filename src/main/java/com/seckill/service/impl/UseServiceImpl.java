@@ -37,7 +37,7 @@ public class UseServiceImpl implements UserService {
     private RedisTemplate<Serializable, Serializable> redisTemplate;
 
     @Override
-    public void login(HttpServletResponse response, LoginDTO loginDTO) {
+    public String login(HttpServletResponse response, LoginDTO loginDTO) {
         if (Objects.isNull(loginDTO)) {
             throw new RuntimeException("用户名密码不能为空");
         }
@@ -55,6 +55,7 @@ public class UseServiceImpl implements UserService {
         //生成cookie
         String userCookie = UUIDUtil.uuid();
         addCookie(response, userDb, userCookie);
+        return userCookie;
     }
 
     private void addCookie(HttpServletResponse response, User userDb, String userCookie) {
@@ -97,5 +98,11 @@ public class UseServiceImpl implements UserService {
             addCookie(response, user, cookie);
         }
         return user;
+    }
+
+
+    @Override
+    public void insert(User user) {
+        userMapper.insert(user);
     }
 }

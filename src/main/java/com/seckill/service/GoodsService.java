@@ -24,4 +24,6 @@ public interface GoodsService {
      * @return
      */
     GoodsVo getGoodsDetailById(Long id);
+
+    int reduceStock(GoodsVo goodsVo);
 }
